@@ -1,12 +1,7 @@
 import pymysql, requests, json, re
 from datetime import datetime
-# read JSON file which is in the next parent folder
-googl = requests.get('https://cloud.iexapis.com/v1/stock/googl/chart/1m?token=pk_c8a8370e394c49528e4c63007f10c7d1').json()
-rfem = requests.get('https://cloud.iexapis.com/v1/stock/rfem/chart/1m?token=pk_c8a8370e394c49528e4c63007f10c7d1').json()
-aple = requests.get('https://cloud.iexapis.com/v1/stock/aple/chart/1m?token=pk_c8a8370e394c49528e4c63007f10c7d1').json()
 #json_data=open(file).read()
 #json_obj = json.loads(json_data)
-
 # do validation and checks before insert
 def validate_string(val):
    if val != None:
@@ -24,40 +19,31 @@ def validate_string(val):
 # connect to MySQL
 con = pymysql.connect(host = 'localhost',user = 'root',passwd = '',db = 'IEXCLOUD')
 cursor = con.cursor()
-
-
 # parse json data to SQL insert
-def getIEX(file, symb):
-    cursor.execute("SELECT Date FROM "+symb+" ORDER BY DATE DESC LIMIT 1")
+notes = open('iexnotes.txt', 'w')
+def getIEX(symb):
+    file = requests.get('https://cloud.iexapis.com/v1/stock/'+symb+'/chart/1m?token=pk_c8a8370e394c49528e4c63007f10c7d1').json()
+    cursor.execute("SELECT Date FROM master where symbol =%s ORDER BY DATE DESC LIMIT 1",(symb))
     record = cursor.fetchall()
-    print(record[0][0])
+    notes.write(str(record[0][0]))
     for i, item in enumerate(file):
         Date = validate_string(item.get("date", None))
         Date = datetime.strptime(Date, '%Y-%m-%d').date()
-        print('here')
         if Date > record[0][0]:
             Open = item.get("open", None)
             Close = item.get("close", None)
             High = item.get("high", None)
             Low = item.get("low", None)
             Volume = item.get("volume", None)
-            print(Date, type(Date))
-            print(Open, type(Open))
-            print(Close, type(Close))
-            print(High, type(High))
-            print(Low, type(Low))
-            print(Volume, type(Volume))
-            input('done')
-            print(cursor.execute("INSERT INTO "+symb+" (Date, Open, Close, High, Low, Volume) VALUES (%s,%s,%s,%s,%s,%s)", (Date,Open,Close,High,Low,Volume)))
+            cursor.execute("INSERT INTO master (Date, Open, Close, High, Low, Volume, symbol) VALUES (%s,%s,%s,%s,%s,%s,%s)", (Date,Open,Close,High,Low,Volume,symb))
 
-input('googl')
-getIEX(googl, "googl")
-print('success')
-input('rfem')
-print('success')
-getIEX(rfem, 'rfem')
-print('success')
-input('aple')
-getIEX(aple, 'appl')
+getIEX("googl")
+notes.write('google success')
+getIEX('rfem')
+notes.write('rfem success')
+getIEX('aple')
+notes.write('aple success \n')
+print('done')
+notes.close()
 con.commit()
 con.close()
