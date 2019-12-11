@@ -1,6 +1,7 @@
 # Testing Folder
 
 This folder is for the tester, Keith Estrella, and contains all testing related documents and files.
+Files that have a link to drive will be uploaded directly to GitHub.
 
 |File|Summary|
 |--------|-------------|
