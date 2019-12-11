@@ -72,11 +72,6 @@ $results = mysqli_query($conn, $sql1);
                 <i class="fas fa-sort ml-1"></i>
               </a>
             </th>
-			 <th class="th-lg">
-              <a>x
-                <i class="fas fa-sort ml-1"></i>
-              </a>
-            </th>
           </tr>
         </thead>
         <!--Table head-->
