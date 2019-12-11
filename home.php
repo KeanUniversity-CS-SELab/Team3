@@ -47,7 +47,7 @@
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.11/js/mdb.min.js"></script>
 <script src="https://kit.fontawesome.com/d99fb3df37.js" crossorigin="anonymous"></script>
-<?php include('js/chart.php');?>
+<?php include('chart.php');?>
 <script>
 // Basic example
 $(document).ready(function(){
