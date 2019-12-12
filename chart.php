@@ -45,7 +45,7 @@ function printinf($comp){
 }
 ?>
 <?php
-function api($symbols){
+function apin($symbols){
 $url = "https://cloud.iexapis.com/v1/stock/".$symbols."/chart/1m?filter=close&token=pk_c8a8370e394c49528e4c63007f10c7d1";
 $ch = curl_init();
 curl_setopt($ch,CURLOPT_URL,$url);
@@ -84,13 +84,14 @@ return array($date,$close);
 var ctxL = document.getElementById("lineChart").getContext('2d');
 document.getElementById("head").innerHTML=<?php echo json_encode(apiinf("googl")[0][0]);?>;
 document.getElementById("info").innerHTML=<?php echo json_encode(apiinf("googl")[1][0]);?>;
+
 var mygoogleChart = new Chart(ctxL, {
 type: 'line',
 data: {
-labels: <?php echo json_encode(api('googl')[0]);?>,
+labels: <?php echo json_encode(apin('googl')[0]);?>,
 datasets: [{
 label: "GOOGL",
-data: <?php echo json_encode(api('googl')[1]);?> ,
+data: <?php echo json_encode(apin('googl')[1]);?> ,
 backgroundColor: [
 'rgba(105, 0, 132, .2)',
 ],
@@ -108,13 +109,15 @@ responsive: true
 function google(){
 document.getElementById("head").innerHTML=<?php echo json_encode(apiinf("googl")[0][0]);?>;
 document.getElementById("info").innerHTML=<?php echo json_encode(apiinf("googl")[1][0]);?>;
+document.getElementById("sd").innerHTML=<?php echo json_encode(number_format(Stand_Deviation(apin('googl')[1]),2));?>;
+document.getElementById("aver").innerHTML=<?php echo json_encode(number_format(array_sum(apin('googl')[1])/count(apin('googl')[1]),2));?>;
 	mygoogleChart = new Chart(ctxL, {
 type: 'line',
 data: {
-labels: <?php echo json_encode(api('googl')[0]);?>,
+labels: <?php echo json_encode(apin('googl')[0]);?>,
 datasets: [{
 label: "GOOGL",
-data: <?php echo json_encode(api('googl')[1]);?> ,
+data: <?php echo json_encode(apin('googl')[1]);?> ,
 backgroundColor: [
 'rgba(105, 0, 132, .2)',
 ],
@@ -132,14 +135,15 @@ responsive: true
 function rfem(){
 document.getElementById("head").innerHTML=<?php echo json_encode(apiinf("rfem")[0][0]);?>;
 document.getElementById("info").innerHTML=<?php echo json_encode(apiinf("rfem")[1][0]);?>;
-	document.getElementById("lineChart").innerHTML = "";
+document.getElementById("sd").innerHTML=<?php echo json_encode(number_format(Stand_Deviation(apin('rfem')[1]),2));?>;
+document.getElementById("aver").innerHTML=<?php echo json_encode(number_format(array_sum(apin('rfem')[1])/count(apin('rfem')[1]),2));?>;
 mygoogleChart = new Chart(ctxL, {
 type: 'line',
 data: {
-labels: <?php echo json_encode(api('googl')[0]);?>,
+labels: <?php echo json_encode(apin('googl')[0]);?>,
 datasets: [{
 label: "RFEM",
-data: <?php echo json_encode(api('googl')[1]);?>,
+data: <?php echo json_encode(apin('googl')[1]);?>,
 backgroundColor: [
 'rgba(0, 140, 124, 0.49)',
 ],
@@ -158,13 +162,15 @@ responsive: true
 function aple(){
 document.getElementById("head").innerHTML=<?php echo json_encode(apiinf("aple")[0][0]);?>;
 document.getElementById("info").innerHTML=<?php echo json_encode(apiinf("aple")[1][0]);?>;
+document.getElementById("sd").innerHTML=<?php echo json_encode(number_format(Stand_Deviation(apin('aple')[1]),2));?>;
+document.getElementById("aver").innerHTML=<?php echo json_encode(number_format(array_sum(apin('aple')[1])/count(apin('aple')[1]),2));?>;
 mygoogleChart = new Chart(ctxL, {
 type: 'line',
 data: {
-labels: <?php echo json_encode(api('googl')[0]);?>,
+labels: <?php echo json_encode(apin('googl')[0]);?>,
 datasets: [{
 label: "APLE",
-data: <?php echo json_encode(api('googl')[1]);?>,
+data: <?php echo json_encode(apin('googl')[1]);?>,
 backgroundColor: [
 'rgba(104, 194, 20, 0.46)',
 ],
@@ -180,4 +186,39 @@ responsive: true
 }
 });}
 </script>
-
+<?php
+function Stand_Deviation($arr) 
+    { 
+        $num_of_elements = count($arr); 
+          
+        $variance = 0.0; 
+          
+                // calculating mean using array_sum() method 
+        $average = array_sum($arr)/$num_of_elements; 
+          
+        foreach($arr as $i) 
+        { 
+            // sum of squares of differences between  
+                        // all numbers and means. 
+            $variance += pow(($i - $average), 2); 
+        } 
+          
+        return (float)sqrt($variance/$num_of_elements); 
+    } 
+?>
+<div id='stat'>
+	<table class="table">
+		  <thead class="black white-text">
+			<tr>
+			  <th scope="col">Average Close Price</th>
+			  <th scope="col">Standard Deviation from the Average</th>
+			</tr>
+		  </thead>
+		<tbody>
+		<tr>
+		  <td id="aver"><?php echo number_format(array_sum(apin('googl')[1])/count(apin('googl')[1]),2);?></td>
+			<td id="sd"><?php echo number_format(Stand_Deviation(apin('googl')[1]),2);?></td>
+		</tr>
+		</tbody>
+	</table>
+</div>
