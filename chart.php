@@ -210,7 +210,7 @@ function Stand_Deviation($arr)
 	<table class="table">
 		  <thead class="black white-text">
 			<tr>
-			  <th scope="col">Average Close Price</th>
+			  <th scope="col">Average Close Price Over 30 Days</th>
 			  <th scope="col">Standard Deviation from the Average</th>
 			</tr>
 		  </thead>
