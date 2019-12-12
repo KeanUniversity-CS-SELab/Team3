@@ -2,10 +2,10 @@ import pymysql, requests, json, re
 from datetime import datetime
 from datetime import timedelta
 
-
+temp =[]
 #retrieve data, columns a list list of column names, sDate is the date to start the search and dure is how far back the user wants to retrieve
 def getData(sDate=datetime.now().date(), columns=['*'], symbolS=["googl","aple","rfem"], dure=1):
-   con = pymysql.connect(host = '18.218.249.217',user = 'tester1',passwd = 'tester1@Team3',db = 'iexcloud')
+   con = pymysql.connect(host = 'localhost',user = 'root',passwd = '',db = 'iex_cloud')
    cursor = con.cursor()
    search = " ,".join(columns)
    dure = dure * len(symbolS)
@@ -31,12 +31,115 @@ def getData(sDate=datetime.now().date(), columns=['*'], symbolS=["googl","aple",
             
    return listOfLists
  
-recordList = getData(columns=['Close','Volume'], dure=30, symbolS=['googl'])
-change = []
-for x in recordList:
-   mylist =[]
-   for y in x:
-      if x.index(y) != len(x)-1:
-         mylist.append(recordList[recordList.index(x)][x.index(y)+1]-recordList[recordList.index(x)][x.index(y)])
-   change.append(mylist)
-print(change)
+
+
+def change(symb):
+   recordList = getData(columns=['Close'], dure=30, symbolS=symb)
+   change = []
+   for x in recordList:
+      mylist =[]
+      for y in x:
+         if x.index(y) != len(x)-1:
+            mylist.append(recordList[recordList.index(x)][x.index(y)+1]-recordList[recordList.index(x)][x.index(y)])
+      change.append(mylist)
+   return change
+
+
+def changePercent(symb):
+   recordList = getData(columns=['Close'], dure=30, symbolS=symb)
+   change = []
+   for x in recordList:
+      mylist =[]
+      for y in x:
+         if x.index(y) != len(x)-1:
+            mylist.append(((recordList[recordList.index(x)][x.index(y)+1]-recordList[recordList.index(x)][x.index(y)])/recordList[recordList.index(x)][x.index(y)])*100)
+      change.append(mylist)
+   return change
+
+def changeOverTime(symb):
+   recordList = getData(columns=['Close'], dure=30, symbolS=symb)
+   change = []
+   for x in recordList:
+      mylist =[]
+      for y in x:
+         if x.index(y) != len(x)-1:
+            mylist.append(((recordList[recordList.index(x)][x.index(y)+1]-recordList[0][0])/recordList[0][0])*100)
+      change.append(mylist)
+   return(change)
+
+def volumeChange(symb):
+   recordList = getData(columns=['Volume'], dure=30, symbolS=symb)
+   change = []
+   for x in recordList:
+      mylist =[]
+      for y in x:
+         if x.index(y) != len(x)-1:
+            mylist.append(recordList[recordList.index(x)][x.index(y)+1]-recordList[recordList.index(x)][x.index(y)])
+      change.append(mylist)
+   return change
+
+
+def volumeChangePercent(symb):
+   recordList = getData(columns=['Volume'], dure=30, symbolS=symb)
+   change = []
+   for x in recordList:
+      mylist =[]
+      for y in x:
+         if x.index(y) != len(x)-1:
+            mylist.append(((recordList[recordList.index(x)][x.index(y)+1]-recordList[recordList.index(x)][x.index(y)])/recordList[recordList.index(x)][x.index(y)])*100)
+      change.append(mylist)
+   return change
+
+def volumeChangeOverTime(symb):
+   recordList = getData(columns=['Volume'], dure=30, symbolS=symb)
+   change = []
+   for x in recordList:
+      mylist =[]
+      for y in x:
+         if x.index(y) != len(x)-1:
+            mylist.append(((recordList[recordList.index(x)][x.index(y)+1]-recordList[0][0])/recordList[0][0])*100)
+      change.append(mylist)
+   return change
+
+
+def unlist(x):
+   for i in x:
+      if type(i)==list:
+         unlist(i)
+      else:
+         temp.append(i)
+   return temp
+
+def minPrice(range, symb):
+   recordList = getData(columns=['Close'], dure=range, symbolS=symb)
+   output = unlist(recordList)
+   return min(output)
+
+
+def maxPrice(range, symb):
+   recordList = getData(columns=['Close'], dure=range, symbolS=symb)
+   output = unlist(recordList)
+   return max(output)
+
+
+def avgPrice(range, symb): 
+   recordList = getData(columns=['Close'], dure=range, symbolS=symb)
+   output = unlist(recordList)
+   return sum(output)/len(output)  
+
+change1=change(["googl","aple","rfem"])
+change2=changePercent(["googl","aple","rfem"])
+change3=changeOverTime(["googl","aple","rfem"])
+
+
+
+volume1=volumeChange(["googl","aple","rfem"])
+volume2=volumeChangePercent(["googl","aple","rfem"])
+volume3=volumeChangeOverTime(["googl","aple","rfem"])
+
+
+min_value=minPrice(range=30, symb=["googl","aple","rfem"])
+max_value=maxPrice(range=30, symb=["googl","aple","rfem"])
+avg_value=avgPrice(range=30, symb=["googl","aple","rfem"])
+
+print (min_value, max_value, avg_value)
