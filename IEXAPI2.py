@@ -13,18 +13,71 @@ def dict_factory(cursor, row):
 
 @app.route('/', methods=['GET'])
 def home():
-    return '''<h1>API CREATION SUCCESSFUL</h1>
-<p>COMPANY INFORMATION</p>
-<p><a href="http://127.0.0.1/SoftEng/home.php"><button>Go to Graphic User Interface</button></a><p>
-<p><a href="http://127.0.0.1:5000/api/v1/resources/company/all"><button>Go to Restful API</button></a> http://127.0.0.1:5000/api/v1/resources/company/all<p>
-<div>for restful api:
+    return '''<!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.11/css/mdb.min.css" rel="stylesheet">
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script>alert("API CREATION SUCCESSFUL");</script>
+<div class="container m-auto mt-3">
+<h1>GOOGL, RFEM, AND APLE COMPANY INFORMATION</h1>
+<p><a href="http://127.0.0.1/SoftEng/home.php"><button class="btn btn-info">Go to Graphic User Interface</button></a><p>
+<p><a href="http://127.0.0.1:5000/api/v1/resources/company/all"><button class="btn btn-info">Check it out</button></a></p> 
+<div>For our Restful api:
 <ul>
 <li>http://127.0.0.1:5000/api/v1/resources/company/all: show all company info</li>
-<li>variables are symbol, employees and isstype</li>
+<li>parameters are symbol, employees and isstype</li>
 <li>the symbols are REFM, APLE, AND GOOGL</li>
 <li>To find the different isstypes and employees use the company/all link</li>
 <li>To find thirty day records use /api/v1/resources?symbol (symbols are aple,googl,rfem) or add /all for all symbols</li>
-</ul></div>'''
+</ul></div>
+<div>
+<button class="btn"onclick="tog()"><h2>List of possible URLS:
+</h2></button>
+<ul id="list" class="list" style="display:none;">
+	<li><a href="http://127.0.0.1:5000">http://127.0.0.1:5000</a></li>
+	<li><a href="http://127.0.0.1:5000/api/v1/resources/company/all">http://127.0.0.1:5000/api/v1/resources/company/all</a></li>
+	<li><a href="http://127.0.0.1:5000/api/v1/resources/company?symbol=GOOGL">http://127.0.0.1:5000/api/v1/resources/company?symbol=GOOGL</a></li>
+	<li><a href="http://127.0.0.1:5000/api/v1/resources/company?symbol=REFM">http://127.0.0.1:5000/api/v1/resources/company?symbol=REFM</a></li>
+	<li><a href="http://127.0.0.1:5000/api/v1/resources/company?symbol=APLE">http://127.0.0.1:5000/api/v1/resources/company?symbol=APLE</a></li>
+	<li><a href="http://127.0.0.1:5000/api/v1/resources/company?employees=0">http://127.0.0.1:5000/api/v1/resources/company?employees=0</a></li>
+	<li><a href="http://127.0.0.1:5000/api/v1/resources/company?employees=62">http://127.0.0.1:5000/api/v1/resources/company?employees=62</a></li>
+	<li><a href="http://127.0.0.1:5000/api/v1/resources/company?employees=98771">http://127.0.0.1:5000/api/v1/resources/company?employees=98771</a></li>
+	<li><a href="http://127.0.0.1:5000/api/v1/resources/company?isstype=cs">http://127.0.0.1:5000/api/v1/resources/company?isstype=cs</a></li>
+	<li><a href="http://127.0.0.1:5000/api/v1/resources/company?isstype=cs">http://127.0.0.1:5000/api/v1/resources/company?isstype=et</a></li>
+		<li><a href="http://127.0.0.1:5000/api/v1/resources/all">http://127.0.0.1:5000/api/v1/resources/all</a></li>
+		<li><a href="http://127.0.0.1:5000/api/v1/resources?symbol=googl">http://127.0.0.1:5000/api/v1/resources?symbol=googl</a></li>
+		<li><a href="http://127.0.0.1:5000/api/v1/resources?symbol=rfem">http://127.0.0.1:5000/api/v1/resources?symbol=rfem</a></li>
+		</a></li>
+		<li><a href="http://127.0.0.1:5000/api/v1/resources?symbol=aple">http://127.0.0.1:5000/api/v1/resources?symbol=aple</a></li>
+</ul>
+</div></div>
+<script>
+function tog(){
+var show = document.getElementById("list").style.display
+if (show == "none"){
+	document.getElementById("list").style.display="block";
+}
+else{
+ document.getElementById("list").style.display="none";
+}
+}
+</script>
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.11/js/mdb.min.js"></script>
+<script src="https://kit.fontawesome.com/d99fb3df37.js" crossorigin="anonymous"></script>'''
 
 
 @app.route('/api/v1/resources/company/all', methods=['GET'])
