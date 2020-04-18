@@ -9,7 +9,7 @@ display: block;
 }
 </style>
 <?php
-$conn = mysqli_connect("localhost", "keonta", "lovefashion13", "iexcloud");
+$conn = mysqli_connect("localhost", "", "", "iexcloud");
 $sql1 = "SELECT * FROM master ORDER BY DATE DESC LIMIT 30";
 $results = mysqli_query($conn, $sql1);
 ?>
