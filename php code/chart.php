@@ -2,7 +2,7 @@
 #retrieve data, columns a list list of column names, sDate is the date to start the search and dure is how far back the user wants to retrieve
 
 function printSQL($sDate, $columns=array('*'), $symbolS=array("googl","rfem","aple"), $dure=1){
-	$conn = mysqli_connect("localhost", "keonta", "lovefashion13", "iexcloud");
+	$conn = mysqli_connect("localhost", "", "", "iexcloud");
 	$search= join(" ,",$columns);
 	$dure = $dure * count($symbolS);
 	$symb = "'".$symbolS[0]."'";
